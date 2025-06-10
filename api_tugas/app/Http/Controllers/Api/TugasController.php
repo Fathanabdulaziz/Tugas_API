@@ -13,8 +13,8 @@ class TugasController extends Controller
 {
     $query = Tugas::query();
 
-    if ($request->has('nama_tugas')) {
-        $query->where('nama_tugas', 'like', '%' . $request->nama_tugas . '%');
+    if ($request->has('namaTugas')) {
+        $query->where('namaTugas', 'like', '%' . $request->namaTugas . '%');
     }
 
     return $query->get();
@@ -23,9 +23,9 @@ class TugasController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_tugas' => 'required|string|max:255',
+            'namaTugas' => 'required|string|max:255',
             'gambar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'deskripsi_tugas' => 'required|date',
+            'deskripsiTugas' => 'required|date',
         ]);
 
         $path = $request->file('gambar')->store('tugas', 'public');
@@ -33,9 +33,9 @@ class TugasController extends Controller
 
         $tugas = Tugas::create([
             'email' => '$email',
-            'nama_tugas' => $request->nama_tugas,
+            'namaTugas' => $request->namaTugas,
             'gambar' => $path,
-            'deskripsi_tugas' => $request->deskripsi_tugas,
+            'deskripsiTugas' => $request->deskripsiTugas,
         ]);
 
         return response()->json([
@@ -60,9 +60,9 @@ class TugasController extends Controller
     public function update(Request $request, $id)
 {
     $request->validate([
-        'nama_tugas' => 'sometimes|required|string|max:255',
+        'namaTugas' => 'sometimes|required|string|max:255',
         'gambar' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
-        'deskripsi_tugas' => 'sometimes|required|date',
+        'deskripsiTugas' => 'sometimes|required|date',
     ]);
 
     $tugas = Tugas::findOrFail($id);
@@ -73,12 +73,12 @@ class TugasController extends Controller
         $tugas->gambar = $path;
     }
 
-    if ($request->has('nama_tugas')) {
-        $tugas->nama_tugas = $request->nama_tugas;
+    if ($request->has('namaTugas')) {
+        $tugas->namaTugas = $request->namaTugas;
     }
 
-    if ($request->has('deskripsi_tugas')) {
-        $tugas->deskripsi_tugas = $request->deskripsi_tugas;
+    if ($request->has('deskripsiTugas')) {
+        $tugas->deskripsiTugas = $request->deskripsiTugas;
     }
 
     $tugas->save();

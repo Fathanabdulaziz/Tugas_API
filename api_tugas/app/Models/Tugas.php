@@ -8,7 +8,7 @@ class Tugas extends Model
 {
     protected $table = 'tugas';
     protected $primaryKey = 'id';
-   protected $fillable = ['email', 'nama_tugas', 'gambar', 'deskripsi_tugas'];
+   protected $fillable = ['email', 'namaTugas', 'gambar', 'deskripsiTugas'];
 
    public $timestamps = false;
 
