@@ -25,18 +25,23 @@ class TugasController extends Controller
         $request->validate([
             'nama_tugas' => 'required|string|max:255',
             'gambar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'deadline' => 'required|date',
+            'deskripsi_tugas' => 'required|date',
         ]);
 
         $path = $request->file('gambar')->store('tugas', 'public');
+        $email = $request->header("Authorization");
 
         $tugas = Tugas::create([
+            'email' => '$email',
             'nama_tugas' => $request->nama_tugas,
             'gambar' => $path,
-            'deadline' => $request->deadline,
+            'deskripsi_tugas' => $request->deskripsi_tugas,
         ]);
 
-        return response()->json($tugas, 201);
+        return response()->json([
+            "status" => "success",
+            "message" => "Data berhasil masuk."
+        ]);
     }
 
     public function show($id)
@@ -57,7 +62,7 @@ class TugasController extends Controller
     $request->validate([
         'nama_tugas' => 'sometimes|required|string|max:255',
         'gambar' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
-        'deadline' => 'sometimes|required|date',
+        'deskripsi_tugas' => 'sometimes|required|date',
     ]);
 
     $tugas = Tugas::findOrFail($id);
@@ -72,8 +77,8 @@ class TugasController extends Controller
         $tugas->nama_tugas = $request->nama_tugas;
     }
 
-    if ($request->has('deadline')) {
-        $tugas->deadline = $request->deadline;
+    if ($request->has('deskripsi_tugas')) {
+        $tugas->deskripsi_tugas = $request->deskripsi_tugas;
     }
 
     $tugas->save();
